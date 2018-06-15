@@ -1,0 +1,6 @@
+node_modules
+coverage
+package-lock.json
+yarn.lock
+react_milestone.js
+yarn-error.log

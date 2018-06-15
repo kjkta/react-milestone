@@ -1,0 +1,76 @@
+{
+  "name": "react-milestone",
+  "version": "1.0.0",
+  "description": "A progress bar with milestones",
+  "main": "react_milestone.js",
+  "scripts": {
+    "test": "jest --watch",
+    "dev": "babel index.js --watch --out-file react_milestone.js",
+    "build": "babel index.js --out-file react_milestone.js",
+    "prepare": "yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjkta/react-milestone.git"
+  },
+  "keywords": [
+    "react",
+    "progress bar",
+    "milstones"
+  ],
+  "author": "Kyle Thomson <kjay.thomson@gmail.com>",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      "babel-preset-env",
+      "babel-preset-react",
+      "babel-preset-flow"
+    ],
+    "plugins": [
+      "babel-plugin-transform-class-properties"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:flowtype/recommended"
+    ],
+    "env": {
+      "browser": true,
+      "es6": true,
+      "jest": true
+    },
+    "plugins": [
+      "react",
+      "flowtype"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "rules": {
+      "react/prop-types": 0
+    }
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "react": "^16.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-react": "^7.9.1",
+    "flow-bin": "^0.73.0",
+    "jest": "^23.1.0",
+    "react-test-renderer": "^16.4.0"
+  }
+}
