@@ -1,6 +1,6 @@
 {
   "name": "react-milestone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A progress bar with milestones",
   "main": "react_milestone.js",
   "scripts": {
