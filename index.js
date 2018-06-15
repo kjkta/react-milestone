@@ -7,6 +7,7 @@ export const ProgressBar = ({
   milestones = 0,
   color = "orangered",
   Milestone,
+  CurrentMilestone,
   CompletedMilestone
 }: {
   children: ({
@@ -17,6 +18,7 @@ export const ProgressBar = ({
   percentage: number,
   milestones?: number,
   Milestone?: React.Element<*>,
+  CurrentMilestone?: React.Element<*>,
   CompletedMilestone?: React.Element<*>,
   color?: string
 }) => {
@@ -35,7 +37,9 @@ export const ProgressBar = ({
     [...Array(milestones).keys()].map(m => {
       let size = 15;
       let position = m / (milestones - 1);
+      let current = position * 100 === percentage;
       let completed = position * 100 < percentage;
+      console.error(current);
       return (
         <div
           key={m}
@@ -48,6 +52,8 @@ export const ProgressBar = ({
         >
           {completed && CompletedMilestone ? (
             CompletedMilestone
+          ) : current ? (
+            CurrentMilestone
           ) : Milestone ? (
             Milestone
           ) : (
