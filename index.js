@@ -39,7 +39,6 @@ export const ProgressBar = ({
       let position = m / (milestones - 1);
       let current = position * 100 === percentage;
       let completed = position * 100 < percentage;
-      console.error(current);
       return (
         <div
           key={m}
