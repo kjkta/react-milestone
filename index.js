@@ -6,9 +6,11 @@ export const ProgressBar = ({
   percentage = 0,
   milestones = 0,
   color = "orangered",
+  transition = "500ms all",
   Milestone,
   CurrentMilestone,
-  CompletedMilestone
+  CompletedMilestone,
+  onMilestoneClick
 }: {
   children: ({
     containerStyles: { [string]: any },
@@ -17,10 +19,12 @@ export const ProgressBar = ({
   }) => React.Element<*>,
   percentage: number,
   milestones?: number,
+  color?: string,
+  transition?: string,
   Milestone?: React.Element<*>,
   CurrentMilestone?: React.Element<*>,
   CompletedMilestone?: React.Element<*>,
-  color?: string
+  onMilestoneClick: number => void
 }) => {
   let containerStyles = {
     position: "relative",
@@ -31,7 +35,7 @@ export const ProgressBar = ({
     width: percentage + "%",
     height: "100%",
     backgroundColor: color,
-    transition: "500ms all"
+    transition
   };
   let getMilestones = () =>
     [...Array(milestones).keys()].map(m => {
@@ -48,6 +52,7 @@ export const ProgressBar = ({
             transform: "translateY(-50%)",
             left: "calc(" + position * 100 + "% - " + size / 2 + "px)"
           }}
+          onClick={() => onMilestoneClick && onMilestoneClick(m)}
         >
           {completed && CompletedMilestone ? (
             CompletedMilestone
