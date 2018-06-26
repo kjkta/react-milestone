@@ -17,15 +17,15 @@ type MilestoneElementProps = {
 };
 
 type Props = {
-  children: ({
+  percentage: number,
+  children?: ({
     containerStyles: { [string]: any },
     completedBarStyles: { [string]: any },
     milestoneElements: Array<React.Element<*>>
   }) => React.Element<*>,
-  percentage: number,
   milestonesCount?: number,
   color?: string,
-  transition?: string
+  transitionSpeed?: number
 } & MilestoneElementProps;
 
 export function DefaultMilestone({ size }: Milestone) {
@@ -117,8 +117,8 @@ export const ProgressBar = ({
   children,
   percentage = 0,
   milestonesCount = 0,
-  color = "orangered",
-  transition = "500ms all",
+  color = "green",
+  transitionSpeed = 0,
   Milestone,
   CurrentMilestone,
   CompletedMilestone,
@@ -133,7 +133,7 @@ export const ProgressBar = ({
     width: percentage + "%",
     height: "100%",
     backgroundColor: color,
-    transition
+    transition: transitionSpeed + "ms all"
   };
   let milestoneElementProps = {
     Milestone,
