@@ -28,20 +28,20 @@ type Props = {
   transitionSpeed?: number
 } & MilestoneElementProps;
 
-export function DefaultMilestone({ size }: Milestone) {
+function DefaultMilestone({ size }: Milestone) {
   return (
     <div
       style={{
         width: size,
         height: size,
         borderRadius: "50%",
-        backgroundColor: "orangered"
+        backgroundColor: "green"
       }}
     />
   );
 }
 
-export function createMilestone(
+function createMilestone(
   {
     index,
     size,
@@ -63,7 +63,7 @@ export function createMilestone(
   };
 }
 
-export function createMilestones(
+function createMilestones(
   milestoneCount: number,
   percentage: number
 ): Array<Milestone> {
@@ -73,7 +73,7 @@ export function createMilestones(
   );
 }
 
-export function renderMilestone(
+function renderMilestone(
   m: Milestone,
   {
     Milestone,
@@ -104,7 +104,7 @@ export function renderMilestone(
   );
 }
 
-export function renderMilestones(
+function renderMilestones(
   milestones: Array<Milestone>,
   milestoneElementProps: MilestoneElementProps
 ): Array<React.Element<*>> {
