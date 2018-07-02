@@ -1,6 +1,6 @@
 {
   "name": "react-milestone",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A progress bar with milestones",
   "main": "react_milestone.js",
   "scripts": {
@@ -70,7 +70,6 @@
     "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-react": "^7.9.1",
     "flow-bin": "^0.73.0",
-    "jest": "^23.1.0",
-    "react-test-renderer": "^16.4.0"
+    "jest": "^23.1.0"
   }
 }
