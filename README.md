@@ -18,7 +18,7 @@ With milestones
 ```js
 <ProgressBar 
   percentage={this.state.percentComplete} 
-  milestonesCount={3} />
+  milestoneCount={3} />
 ```
 
 With custom milestones markup
@@ -33,7 +33,7 @@ type Milestone = {
 
 <ProgressBar 
   percentage={this.state.percentComplete} 
-  milestonesCount={3}
+  milestoneCount={3}
   Milestone={(milestone: Milestone) => <div>I am a milestone</div>}
   CurrentMilestone={(milestone: Milestone) => <div>I am the current milestone</div>}
   CompletedMilestone={(milestone: Milestone) => <div>I am a completed milestone</div>}
@@ -42,7 +42,7 @@ type Milestone = {
 
 With custom markup
 ```js
-<ProgressBar percentage={50} milestonesCount={5}>
+<ProgressBar percentage={50} milestoneCount={5}>
   {({ containerStyles, completedBarStyles, milestoneElements }) => {
     return (
       <div style={{ ...containerStyles, backgroundColor: "lightgrey" }}>
