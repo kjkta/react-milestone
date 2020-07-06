@@ -1,35 +1,36 @@
-// @flow
 import * as React from "react";
+import * as CSS from "csstype";
 
-type Milestone = {
-  index: number,
-  width: number,
-  position: number,
-  current: boolean,
-  completed: boolean
-};
+export interface Milestone {
+  index: number;
+  width: number;
+  position: number;
+  current: boolean;
+  completed: boolean;
+}
 
-type MilestoneElementProps = {
-  Milestone?: Milestone => React.Element<*>,
-  CurrentMilestone?: Milestone => React.Element<*>,
-  CompletedMilestone?: Milestone => React.Element<*>,
-  onMilestoneClick: number => void
-};
+interface MilestoneElementProps {
+  Milestone?: (milestone: Milestone) => JSX.Element;
+  CurrentMilestone?: (milestone: Milestone) => JSX.Element;
+  CompletedMilestone?: (milestone: Milestone) => JSX.Element;
+  vertical?: boolean;
+  onMilestoneClick: (index: number) => void;
+}
 
-type Props = {
-  percentage: number,
-  vertical: boolean,
-  children?: ({
-    containerStyles: { [string]: any },
-    completedBarStyles: { [string]: any },
-    milestoneElements: Array<React.Element<*>>
-  }) => React.Element<*>,
-  milestoneWidth?: number,
-  milestoneCount?: number,
-  color?: string,
-  transitionSpeed?: number,
-  style?: { [string]: any }
-} & MilestoneElementProps;
+interface Props extends MilestoneElementProps {
+  percentage: number;
+  vertical: boolean;
+  children?: (props: {
+    containerStyles: CSS.Properties;
+    completedBarStyles: CSS.Properties;
+    milestoneElements: JSX.Element[];
+  }) => JSX.Element;
+  milestoneWidth?: number;
+  milestoneCount?: number;
+  color?: string;
+  transitionSpeed?: number;
+  style?: CSS.Properties;
+}
 
 function DefaultMilestone({ width }: Milestone) {
   return (
@@ -38,9 +39,82 @@ function DefaultMilestone({ width }: Milestone) {
         width,
         height: width,
         borderRadius: "50%",
-        backgroundColor: "green"
+        backgroundColor: "green",
       }}
     />
+  );
+}
+
+function createMilestone(
+  {
+    index,
+    width,
+    percentage,
+  }: {
+    index: number;
+    width: number;
+    percentage: number;
+  },
+  totalMilestones: number
+): Milestone {
+  const position = index / (totalMilestones - 1);
+  return {
+    index,
+    width,
+    position,
+    current: position * 100 === percentage,
+    completed: position * 100 < percentage,
+  };
+}
+
+function createMilestones(
+  milestoneCount: number,
+  percentage: number,
+  width: number
+): Array<Milestone> {
+  const iterable = [...Array(milestoneCount).keys()];
+  return iterable.map((index) =>
+    createMilestone({ index, width, percentage }, iterable.length)
+  );
+}
+
+function renderMilestone(
+  m: Milestone,
+  {
+    Milestone,
+    CurrentMilestone,
+    CompletedMilestone,
+    onMilestoneClick,
+    vertical,
+  }: MilestoneElementProps
+): JSX.Element {
+  return (
+    <div
+      key={m.index}
+      style={{
+        position: "absolute",
+        ...(vertical
+          ? {
+              left: "50%",
+              transform: "translateX(-50%)",
+              top: "calc(" + m.position * 100 + "% - " + m.width / 2 + "px)",
+            }
+          : {
+              top: "50%",
+              transform: "translateY(-50%)",
+              left: "calc(" + m.position * 100 + "% - " + m.width / 2 + "px)",
+            }),
+      }}
+      onClick={() => onMilestoneClick && onMilestoneClick(m.index)}
+    >
+      {m.completed && CompletedMilestone
+        ? CompletedMilestone(m)
+        : m.current && CurrentMilestone
+        ? CurrentMilestone(m)
+        : Milestone
+        ? Milestone(m)
+        : DefaultMilestone(m)}
+    </div>
   );
 }
 
@@ -56,124 +130,50 @@ export const ProgressBar = ({
   Milestone,
   CurrentMilestone,
   CompletedMilestone,
-  onMilestoneClick
-}: Props) => {
-  function createMilestone(
-    {
-      index,
-      width,
-      percentage
-    }: {
-      index: number,
-      width: number,
-      percentage: number
-    },
-    totalMilestones: number
-  ): Milestone {
-    let position = index / (totalMilestones - 1);
-    return {
-      index,
-      width,
-      position,
-      current: position * 100 === percentage,
-      completed: position * 100 < percentage
-    };
-  }
-
-  function createMilestones(
-    milestoneCount: number,
-    percentage: number,
-    width: number
-  ): Array<Milestone> {
-    let iterable = [...Array(milestoneCount).keys()];
-    return iterable.map(index =>
-      createMilestone({ index, width, percentage }, iterable.length)
-    );
-  }
-
-  function renderMilestone(
-    m: Milestone,
-    {
-      Milestone,
-      CurrentMilestone,
-      CompletedMilestone,
-      onMilestoneClick
-    }: MilestoneElementProps
-  ): React.Element<*> {
-    return (
-      <div
-        key={m.index}
-        style={{
-          position: "absolute",
-          ...(vertical
-            ? {
-                left: "50%",
-                transform: "translateX(-50%)",
-                top: "calc(" + m.position * 100 + "% - " + m.width / 2 + "px)"
-              }
-            : {
-                top: "50%",
-                transform: "translateY(-50%)",
-                left: "calc(" + m.position * 100 + "% - " + m.width / 2 + "px)"
-              })
-        }}
-        onClick={() => onMilestoneClick && onMilestoneClick(m.index)}
-      >
-        {m.completed && CompletedMilestone
-          ? CompletedMilestone(m)
-          : m.current && CurrentMilestone
-            ? CurrentMilestone(m)
-            : Milestone
-              ? Milestone(m)
-              : DefaultMilestone(m)}
-      </div>
-    );
-  }
-
-  function renderMilestones(
-    milestones: Array<Milestone>,
-    milestoneElementProps: MilestoneElementProps
-  ): Array<React.Element<*>> {
-    return milestones.map(milestone =>
-      renderMilestone(milestone, milestoneElementProps)
-    );
-  }
-  let containerStyles = Object.assign(
+  onMilestoneClick,
+}: Props): JSX.Element => {
+  const containerStyles = Object.assign(
     {
       position: "relative",
       backgroundColor: "lightgrey",
       ...(vertical
         ? {
             width: 3,
-            height: 300
+            height: 300,
           }
-        : { height: 3 })
+        : { height: 3 }),
     },
     style
   );
-  let completedBarStyles = {
+  const completedBarStyles = {
     backgroundColor: color,
     transition: transitionSpeed + "ms all",
     ...(vertical
       ? {
           width: "100%",
-          height: percentage + "%"
+          height: percentage + "%",
         }
-      : { height: "100%", width: percentage + "%" })
+      : { height: "100%", width: percentage + "%" }),
   };
-  let milestoneElementProps = {
-    Milestone,
-    CurrentMilestone,
-    CompletedMilestone,
-    onMilestoneClick
-  };
-  let milestones = createMilestones(milestoneCount, percentage, milestoneWidth);
-  let milestoneElements = renderMilestones(milestones, milestoneElementProps);
+  const milestones = createMilestones(
+    milestoneCount,
+    percentage,
+    milestoneWidth
+  );
+  const milestoneElements = milestones.map((milestone) =>
+    renderMilestone(milestone, {
+      Milestone,
+      CurrentMilestone,
+      CompletedMilestone,
+      onMilestoneClick,
+      vertical,
+    })
+  );
   return children ? (
     children({
       containerStyles,
       completedBarStyles,
-      milestoneElements
+      milestoneElements,
     })
   ) : (
     <div style={containerStyles}>
