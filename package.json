@@ -14,9 +14,10 @@
   "author": "Kyle Thomson <kjay.thomson@gmail.com>",
   "scripts": {
     "build": "pika build",
-    "release": "pika publish pkg",
+    "release": "pika publish",
     "lint": "eslint src",
-    "version": "npm run build"
+    "version": "npm run build",
+    "test": "echo 'Write some tests o_o'"
   },
   "license": "MIT",
   "@pika/pack": {
