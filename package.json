@@ -15,7 +15,8 @@
   "scripts": {
     "build": "pika build",
     "release": "pika publish pkg",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "version": "npm run build"
   },
   "license": "MIT",
   "@pika/pack": {
