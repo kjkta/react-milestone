@@ -14,17 +14,17 @@ interface MilestoneElementProps {
   CurrentMilestone?: (milestone: Milestone) => JSX.Element;
   CompletedMilestone?: (milestone: Milestone) => JSX.Element;
   vertical?: boolean;
-  onMilestoneClick: (index: number) => void;
+  onMilestoneClick?: (index: number) => void;
 }
 
 interface Props extends MilestoneElementProps {
   percentage: number;
-  vertical: boolean;
   children?: (props: {
     containerStyles: CSS.Properties;
     completedBarStyles: CSS.Properties;
     milestoneElements: JSX.Element[];
   }) => JSX.Element;
+  vertical?: boolean;
   milestoneWidth?: number;
   milestoneCount?: number;
   color?: string;
@@ -105,7 +105,7 @@ function renderMilestone(
               left: "calc(" + m.position * 100 + "% - " + m.width / 2 + "px)",
             }),
       }}
-      onClick={() => onMilestoneClick && onMilestoneClick(m.index)}
+      onClick={onMilestoneClick ? () => onMilestoneClick(m.index) : undefined}
     >
       {m.completed && CompletedMilestone
         ? CompletedMilestone(m)
